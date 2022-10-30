@@ -60,7 +60,7 @@ class ViewController: UIViewController {
     
     @IBAction func filterBtnTapped(_ sender: FilterButton) {
         filterBtn.isTapped.toggle()
-        tableView.isHidden.toggle()
+//        tableView.isHidden.toggle()
         
         showMenu = !showMenu
         
