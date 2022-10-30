@@ -9,7 +9,19 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private let filterTypes: [String] = ["Gender", "Species", "State"]
+    @IBOutlet weak var searchField: UITextField!{
+        didSet{
+            searchField.delegate = self
+
+        }
+    }
+    
+    
+    private let filterTypes: [String] = ["Name", "Gender", "Species", "Status"]
+    var selectedFilterType = 0
+    
+
+
     @IBOutlet weak var charactersCV: UICollectionView!{
         didSet {
             charactersCV.dataSource = self
@@ -18,26 +30,21 @@ class ViewController: UIViewController {
     }
     @IBOutlet weak var filterCV: UICollectionView! {
         didSet {
-//            filterCV.isHidden = true
             filterCV.dataSource = self
             filterCV.delegate = self
         }
     }
-    @IBOutlet weak var filterBtn: FilterButton!
-    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTableView()
         setBindings()
         charactersCV.addSubview(self.refreshControl)
-        vm.getChars(page: pageNumber)
+        vm.getChars()
         
     }
     var pageNumber = 1
     var charactersData: ApiData?
     var characters: [Results]? = []
-
     var reachedBottom = false
     
     lazy var refreshControl: UIRefreshControl = {
@@ -57,72 +64,12 @@ class ViewController: UIViewController {
         }
     
     lazy var vm = FirstVM()
-    
-    @IBAction func filterBtnTapped(_ sender: FilterButton) {
-        filterBtn.isTapped.toggle()
-//        tableView.isHidden.toggle()
-        
-        showMenu = !showMenu
-        
-        var indexPaths = [IndexPath]()
-        
-        filterTypes.forEach { (type) in
-            let indexPath = IndexPath(row: filterTypes.firstIndex(where: { $0  == type }) ?? 0, section: 0)
-            indexPaths.append(indexPath)
-        }
-        
-        if showMenu {
-            view.alpha = 0.8
-            tableView.insertRows(at: indexPaths, with: .fade)
-        } else {
-            view.alpha = 1
-            tableView.deleteRows(at: indexPaths, with: .fade)
-        }
-    }
-    
-    var tableView: UITableView!
     var showMenu = false
 
 
-    func configureTableView() {
-        tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = .clear
-        tableView.isHidden = true
-        
-        tableView.isScrollEnabled = false
-        tableView.rowHeight = 50
-        
-        tableView.register(FilterTVCell.self, forCellReuseIdentifier: "FilterTVCell")
-        
-        
-        view.addSubview(tableView)
-        tableView.topAnchor.constraint(equalTo: filterBtn.bottomAnchor, constant: 10).isActive = true
-        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
-        tableView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-    }
+   
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return showMenu == true ? filterTypes.count : 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FilterTVCell", for: indexPath) as! FilterTVCell
-        cell.selectionStyle = .none
-        cell.backgroundColor = .clear
-        cell.label.text = filterTypes[indexPath.row]
-        return cell
-    }
-    
-    
-}
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -130,7 +77,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         case charactersCV:
             return self.characters?.count ?? 0
         case filterCV:
-            return 5
+            return self.filterTypes.count
         default:
             return 0
         }
@@ -145,6 +92,9 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
             return cell
         case filterCV:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCVCell", for: indexPath) as! FilterCVCell
+            cell.filterTypeTitle.text = filterTypes[indexPath.row]
+            cell.contentView.alpha = indexPath.row == selectedFilterType ? 1 : 0.5
+            
             return cell
         default:
             return UICollectionViewCell()
@@ -161,7 +111,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
                   }
               }
         case filterCV:
-            print("")
+            selectedFilterType = indexPath.row
+            collectionView.reloadData()
             
         default:
             print("")
@@ -174,7 +125,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
                 pageNumber += 1
                 self.reachedBottom = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    self.vm.getChars(page: self.pageNumber)
+                    self.vm.getNextChars(title: self.filterTypes[self.selectedFilterType], text: self.searchField.text ?? "")
                     self.reachedBottom = false
 
                 })
@@ -200,8 +151,16 @@ extension ViewController {
     func setBindings() {
         vm.success = { data in
             self.charactersData = data
-            self.characters?.append(contentsOf: data?.results ?? [])
+            self.characters = data?.results
+            
             print("charactersData", self.charactersData)
+            DispatchQueue.main.async {
+                self.charactersCV.reloadData()
+            }
+        }
+        
+        vm.successOnNext = { data in
+            self.characters?.append(contentsOf: data?.results ?? [])
             DispatchQueue.main.async {
                 self.charactersCV.reloadData()
             }
@@ -222,9 +181,30 @@ extension ViewController: UICollectionViewDelegateFlowLayout{
         return CGSize(width: (charactersCV.bounds.size.width / 2) - 10, height: 230)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 15
+        return 10
     }
 
 }
 
 
+
+extension ViewController: UITextFieldDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.vm.getChars(title: filterTypes[selectedFilterType], text: textField.text ?? "")    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+            
+        self.vm.getChars(title: filterTypes[selectedFilterType], text: textField.text ?? "")
+        
+        return true
+        }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            self.view.endEditing(true)
+        
+        return false
+    }
+    
+    
+}

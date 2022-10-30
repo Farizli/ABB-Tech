@@ -9,12 +9,10 @@
 /* Begin PBXBuildFile section */
 		211944FB290D9EDA0091734F /* FilterCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211944FA290D9EDA0091734F /* FilterCVCell.swift */; };
 		211944FD290D9EEB0091734F /* CharacterCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211944FC290D9EEB0091734F /* CharacterCVCell.swift */; };
-		211944FF290DB5BB0091734F /* FilterTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211944FE290DB5BB0091734F /* FilterTVCell.swift */; };
 		21194502290DC33B0091734F /* FirstVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21194501290DC33B0091734F /* FirstVM.swift */; };
 		21194504290E69130091734F /* CollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21194503290E69130091734F /* CollectionReusableView.swift */; };
 		21194506290E720D0091734F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21194505290E720D0091734F /* SecondViewController.swift */; };
 		21194508290E8D3F0091734F /* ColorAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21194507290E8D3F0091734F /* ColorAsset.xcassets */; };
-		2189ABA6290C4D0500C94C76 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189ABA5290C4D0500C94C76 /* WebService.swift */; };
 		2189ABA8290C4D3200C94C76 /* CharacterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189ABA7290C4D3200C94C76 /* CharacterModel.swift */; };
 		2189ABAA290D8E4300C94C76 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189ABA9290D8E4300C94C76 /* FilterButton.swift */; };
 		21A9A6DC290AFCD700462A56 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9A6DB290AFCD700462A56 /* AppDelegate.swift */; };
@@ -53,12 +51,10 @@
 		1FC3E1BCAF207DE78CAFAF11 /* Pods-Rick-and-Morty-.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rick-and-Morty-.release.xcconfig"; path = "Target Support Files/Pods-Rick-and-Morty-/Pods-Rick-and-Morty-.release.xcconfig"; sourceTree = "<group>"; };
 		211944FA290D9EDA0091734F /* FilterCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCVCell.swift; sourceTree = "<group>"; };
 		211944FC290D9EEB0091734F /* CharacterCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCVCell.swift; sourceTree = "<group>"; };
-		211944FE290DB5BB0091734F /* FilterTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTVCell.swift; sourceTree = "<group>"; };
 		21194501290DC33B0091734F /* FirstVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstVM.swift; sourceTree = "<group>"; };
 		21194503290E69130091734F /* CollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionReusableView.swift; sourceTree = "<group>"; };
 		21194505290E720D0091734F /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		21194507290E8D3F0091734F /* ColorAsset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ColorAsset.xcassets; sourceTree = "<group>"; };
-		2189ABA5290C4D0500C94C76 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		2189ABA7290C4D3200C94C76 /* CharacterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterModel.swift; sourceTree = "<group>"; };
 		2189ABA9290D8E4300C94C76 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		21A9A6D8290AFCD700462A56 /* Rick-and-Morty-.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rick-and-Morty-.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,7 +112,6 @@
 		21194500290DBEEC0091734F /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				211944FE290DB5BB0091734F /* FilterTVCell.swift */,
 				211944FA290D9EDA0091734F /* FilterCVCell.swift */,
 				211944FC290D9EEB0091734F /* CharacterCVCell.swift */,
 			);
@@ -151,7 +146,6 @@
 				21A9A6DB290AFCD700462A56 /* AppDelegate.swift */,
 				21A9A6DD290AFCD700462A56 /* SceneDelegate.swift */,
 				21A9A70F290B130700462A56 /* Global */,
-				21A9A70E290B12FC00462A56 /* WebService */,
 				21A9A70D290B12E900462A56 /* Model */,
 				21A9A70C290B12DF00462A56 /* ViewModel */,
 				21A9A70B290B12CD00462A56 /* View */,
@@ -202,14 +196,6 @@
 				2189ABA7290C4D3200C94C76 /* CharacterModel.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		21A9A70E290B12FC00462A56 /* WebService */ = {
-			isa = PBXGroup;
-			children = (
-				2189ABA5290C4D0500C94C76 /* WebService.swift */,
-			);
-			path = WebService;
 			sourceTree = "<group>";
 		};
 		21A9A70F290B130700462A56 /* Global */ = {
@@ -494,10 +480,8 @@
 				211944FB290D9EDA0091734F /* FilterCVCell.swift in Sources */,
 				21A9A6DE290AFCD700462A56 /* SceneDelegate.swift in Sources */,
 				2189ABA8290C4D3200C94C76 /* CharacterModel.swift in Sources */,
-				211944FF290DB5BB0091734F /* FilterTVCell.swift in Sources */,
 				21194506290E720D0091734F /* SecondViewController.swift in Sources */,
 				21194502290DC33B0091734F /* FirstVM.swift in Sources */,
-				2189ABA6290C4D0500C94C76 /* WebService.swift in Sources */,
 				21A9A711290B132500462A56 /* Extensions.swift in Sources */,
 				21194504290E69130091734F /* CollectionReusableView.swift in Sources */,
 				211944FD290D9EEB0091734F /* CharacterCVCell.swift in Sources */,
